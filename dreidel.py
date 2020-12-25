@@ -21,7 +21,7 @@ GRAPH_PLAYER_COLORS = ['b', 'g', 'y']
 
 def main():
 #	starting_amounts = [x for x in range(MIN_STARTING_AMOUNT, MAX_STARTING_AMOUNT+1)]
-	starting_amounts = [8,9,10]
+	starting_amounts = [2,4,6,8,10]
 #	player_counts = [x for x in range(MIN_PLAYER_COUNT, MAX_PLAYER_COUNT+1)]
 	player_counts = [5,7,9]
 	ending_rounds = [[0 for y in range(0, len(starting_amounts))] for x in range(0, len(player_counts))]
@@ -37,7 +37,7 @@ def make_plots(ending_rounds, starting_amounts, player_counts):
 	fig = plt.figure()
 
 	# show 3d surface
-	ax = fig.add_subplot(1,2,1,projection='3d')
+	ax = fig.add_subplot(1,2,2,projection='3d')
 	# ax = fig.gca(projection='3d')
 	X, Y = np.meshgrid(starting_amounts, player_counts)
 	ax.plot_surface(X, Y, ending_rounds, rstride=1, cstride=1, cmap=cm.coolwarm, linewidth=1, antialiased=False)
@@ -47,7 +47,7 @@ def make_plots(ending_rounds, starting_amounts, player_counts):
 	ax.set_title("Rounds to dreidel convergence")
 
 	# show line graphs of starting amount v. ending round for several different player counts
-	ax = fig.add_subplot(1, 2, 2)
+	ax = fig.add_subplot(1, 2, 1)
 	for ii in range(0, len(GRAPH_PLAYER_OFFSETS)):
 		player_count = TYPICAL_PLAYER_COUNT+GRAPH_PLAYER_OFFSETS[ii]
 		ax.plot(starting_amounts, ending_rounds[ii], GRAPH_PLAYER_COLORS[ii], label="%i players" % player_count)
@@ -89,7 +89,7 @@ def play_many_rounds(trial_count, player_count, starting_amount):
 					scores[p] += amount
 					pot -= amount
 				else: # Nun (nothing)
-					pass # nothing
+					pass # NOP
 				if pot <= 0: # if pot is empty, all ante up
 					for p in players:
 						scores[p] -= 1
@@ -105,7 +105,7 @@ def play_many_rounds(trial_count, player_count, starting_amount):
 				break
 	if len(ending_round) < 1: return 0
 	print ("")
-	print("Players: {0}; Gelt/player: {1}; Array: {2}; {3}of{4}gamesFinishedWithin{5}rounds; AvgRnds/game: {6}; AvgSpins/game:{7}".format(len(players), starting_amount, (ending_round), len(ending_round), TRIAL_COUNT, MAX_ROUNDS, (mean(ending_round)), (spins/(len(ending_round)))))
+	print("Players: {0}; Gelt/player: {1}; RndsArray: {2}; {3}of{4}gamesFinishedWithin{5}rounds; AvgRnds/game: {6}; AvgSpins/game:{7}".format(len(players), starting_amount, (ending_round), len(ending_round), TRIAL_COUNT, MAX_ROUNDS, (mean(ending_round)), (spins/(len(ending_round)))))
 	return mean(ending_round)
 
 def mean(l):
